@@ -1,0 +1,4 @@
+venv/*
+*__pycache__/*
+uploads/*
+gdrive228-b98aceef9943.json

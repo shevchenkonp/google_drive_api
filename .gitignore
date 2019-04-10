@@ -1,4 +1,5 @@
 venv/*
 *__pycache__/*
-uploads/*
+!somefolder/.gitkeep
 gdrive228-b98aceef9943.json
+~venv/*

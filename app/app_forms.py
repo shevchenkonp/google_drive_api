@@ -14,19 +14,28 @@ class CustomLoginForm(LoginForm):
         # Put code here if you want to do stuff after login attempt
 
         user = User.query.filter_by(email=self.email.data).first()
-        if user.blocked_until and ((datetime.utcnow() - user.blocked_until).total_seconds() > app.config['LOCK_TIME']):
-            user.active = True
 
-        if not verify_password(request.form['password'], user.password) and \
-                user.unsuccessful_login_count < app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
-            user.unsuccessful_login_count = user.unsuccessful_login_count + 1 if user.unsuccessful_login_count else 1
-        elif user.unsuccessful_login_count == app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
-            user.active = False
-            user.blocked_until = datetime.utcnow()
-            user.unsuccessful_login_count = 0
-        elif not user.active:
-            flash('Your account is locked for {} seconds'.format(
-                (datetime.utcnow() - user.blocked_until).total_seconds()))
+
+        if user.is_active:
+            if not verify_password(request.form['password'], user.password)\
+                    and user.unsuccessful_login_count < \
+                    app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
+                user.unsuccessful_login_count = user.unsuccessful_login_count + 1 if user.unsuccessful_login_count else 1
+
+                if user.unsuccessful_login_count >= app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
+                    user.active = False
+                    user.blocked_until = datetime.utcnow()
+
+
+        else:
+            deltatime = (datetime.utcnow() - user.blocked_until).total_seconds()
+            if deltatime >= app.config['LOCK_TIME']:
+                user.blocked_until = None
+                user.active = True
+                user.unsuccessful_login_count = 0
+            else:
+                flash('Your account is locked for {} seconds'.format(int(app.config['LOCK_TIME'] - deltatime)))
+
         db.session.add(user)
         db.session.commit()
         return response

@@ -5,11 +5,7 @@ from app import app, db, service
 from app.models import User, Role
 from werkzeug.utils import secure_filename
 from flask import render_template, flash, request
-from flask_security import Security, SQLAlchemyUserDatastore, login_required, current_user
-from app.app_forms import CustomLoginForm
-
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+from flask_security import login_required
 
 
 def allowed_file(filename):

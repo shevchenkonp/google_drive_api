@@ -25,4 +25,4 @@ class Config(object):
     FOLDER_ID = '1JspSlDDU5kqUvTZPERotBaKZIGcW0maz'
     FILE_PATH = '/home/nshevchenko/Desktop/gdrive/uploads/{}'
     MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = 5
-    LOCK_TIME = 600
+    LOCK_TIME = 60

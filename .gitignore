@@ -6,3 +6,5 @@ project_service_account_file.json
 uploads/*
 app.db
 .env
+app/__pycache__/
+migrations/__pycache__/

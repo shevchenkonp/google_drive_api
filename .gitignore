@@ -1,5 +1,8 @@
-venv/*
-*__pycache__/*
-!somefolder/.gitkeep
-gdrive228-b98aceef9943.json
-~venv/*
+venv/
+~venv/
+__pycache__/
+.idea/
+project_service_account_file.json
+uploads/*
+app.db
+.env

@@ -17,7 +17,7 @@ class CustomLoginForm(LoginForm):
 
 
         if user.is_active:
-            if not verify_password(request.form['password'], user.password)\
+            if not verify_password(request.form['password'], user.password) \
                     and user.unsuccessful_login_count < \
                     app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
                 user.unsuccessful_login_count = user.unsuccessful_login_count + 1 if user.unsuccessful_login_count else 1

@@ -16,6 +16,8 @@ def allowed_file(filename):
 def secure_upload(file):
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        if not os.path.exists(app.config['UPLOAD_FOLDER']):
+            os.makedirs(app.config['UPLOAD_FOLDER'])
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return True
     else:

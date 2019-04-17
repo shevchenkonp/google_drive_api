@@ -1,11 +1,12 @@
 from flask import Flask
-from flask_mail import Mail
-from google.oauth2 import service_account
 from config import Config
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from werkzeug.contrib.fixers import ProxyFix
 from flask_security import Security, SQLAlchemyUserDatastore
 
 
@@ -16,6 +17,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bootstrap = Bootstrap(app)
 mail = Mail(app)
+
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 credentials = service_account.Credentials.from_service_account_file(
     app.config['SERVICE_ACCOUNT_FILE'], scopes=app.config['SCOPES'])

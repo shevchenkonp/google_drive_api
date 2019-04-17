@@ -1,7 +1,7 @@
 import unittest
 from app import app, db
 from app.models import User
-from app.app_forms import lock_time_is_out, soft_block
+from app.app_forms import soft_block
 
 
 class SoftBlockCase(unittest.TestCase):
@@ -14,7 +14,7 @@ class SoftBlockCase(unittest.TestCase):
         db.drop_all()
 
     def test_lock_user(self):
-        u = User(email='testmail@example.com', unsuccessful_login_count=5)
+        u = User(email='testmail@example.com', unsuccessful_login_count=app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS'])
         db.session.add(u)
         db.session.commit()
         self.assertFalse(u.is_active)

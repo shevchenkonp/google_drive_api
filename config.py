@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(basedir, '.env')
+load_dotenv(os.path.join(basedir, '.env'))
 
 
 class Config(object):
@@ -21,6 +21,7 @@ class Config(object):
     SECURITY_SEND_REGISTER_EMAIL = os.environ.get('SECURITY_SEND_REGISTER_EMAIL', False)
     SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT')
     SECURITY_TRACKABLE = os.environ.get('SECURITY_TRACKABLE', True)
+
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
@@ -39,7 +40,7 @@ class Config(object):
     FILE_PATH = os.path.join(UPLOAD_FOLDER, '{}')
 
     # soft block configurations
-    MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS') or 5)
+    MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS'))
     LOCK_TIME = int(os.environ.get('LOCK_TIME') or 60)
 
 

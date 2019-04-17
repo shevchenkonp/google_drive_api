@@ -18,7 +18,7 @@ def soft_block(user, locktime):
         if not verify_password(request.form['password'], user.password) \
                 and user.unsuccessful_login_count < \
                 app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
-            user.unsuccessful_login_count = user.unsuccessful_login_count + 1 if user.unsuccessful_login_count else 1
+            user.unsuccessful_login_count = user.unsuccessful_login_count + 1
 
             if user.unsuccessful_login_count >= app.config['MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS']:
                 user.active = False
@@ -43,8 +43,12 @@ class CustomLoginForm(LoginForm):
         # Put code here if you want to do stuff after login attempt
 
         user = User.query.filter_by(email=self.email.data).first()
-        locktime = (datetime.utcnow() - user.blocked_until).total_seconds()
+        if user.unsuccessful_login_count is None:
+            user.unsuccessful_login_count = 0
+        if user.blocked_until is None:
+            user.blocked_until = datetime.utcnow()
 
+        locktime = (datetime.utcnow() - user.blocked_until).total_seconds()
         soft_block(user, locktime)
 
         return response

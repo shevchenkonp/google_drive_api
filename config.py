@@ -36,7 +36,7 @@ class Config(object):
     #google drive api configurations
     SCOPES = ['https://www.googleapis.com/auth/drive']
     SERVICE_ACCOUNT_FILE = os.path.join(basedir, 'project_service_account_file.json')
-    FOLDER_ID = os.environ.get('FOLDER_ID')
+    FOLDER_ID = os.environ.get('FOLDER_ID') # your google drive folder ID
     FILE_PATH = os.path.join(UPLOAD_FOLDER, '{}')
 
     # soft block configurations

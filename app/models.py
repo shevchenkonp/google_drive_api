@@ -1,7 +1,5 @@
 from app import db
-from flask import current_app, request, after_this_request
 from flask_security import UserMixin, RoleMixin
-from werkzeug.local import LocalProxy
 
 
 roles_users = db.Table('roles_users',

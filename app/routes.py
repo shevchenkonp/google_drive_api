@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 import os
 from googleapiclient.http import MediaFileUpload
-from app import app, db, service
-from app.models import User, Role
+from app import app, service
 from werkzeug.utils import secure_filename
 from flask import render_template, flash, request
 from flask_security import login_required

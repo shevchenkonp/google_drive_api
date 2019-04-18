@@ -1,9 +1,9 @@
-from flask import request, flash
-from flask_security.forms import LoginForm
-from flask_security.utils import verify_password
 from app import app, db
 from app.models import User
 from datetime import datetime
+from flask import request, flash
+from flask_security.forms import LoginForm
+from flask_security.utils import verify_password
 
 
 def lock_time_is_out(locktime):

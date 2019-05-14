@@ -1,33 +1,22 @@
-import os
-from googleapiclient.http import MediaFileUpload
-from app import app, service
-from werkzeug.utils import secure_filename
-from flask import render_template, flash, request
+from flask import Blueprint, render_template, flash, request, current_app as app
 from flask_security import login_required
 
+from app.utils import secure_upload
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+from googleapiclient.http import MediaFileUpload
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 
+main_page = Blueprint('main_page', __name__, template_folder='templates')
 
-def secure_upload(file):
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            os.makedirs(app.config['UPLOAD_FOLDER'])
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return True
-    else:
-        flash('PROHIBITED FORMAT!')
-        return False
-
-
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@main_page.route('/', methods=['GET', 'POST'])
+@main_page.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     if request.method == 'POST':
+        credentials = service_account.Credentials.from_service_account_file(
+            app.config['SERVICE_ACCOUNT_FILE'], scopes=app.config['SCOPES'])
+        service = build('drive', 'v3', credentials=credentials)
         file = request.files['file']
         if secure_upload(file):
             file_metadata = {'name': file.filename,

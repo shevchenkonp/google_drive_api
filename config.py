@@ -41,6 +41,6 @@ class Config(object):
 
     # soft block configurations
     MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS'))
-    LOCK_TIME = int(os.environ.get('LOCK_TIME') or 60)
+    LOCK_TIME = int(os.environ.get('LOCK_TIME'))
 
 

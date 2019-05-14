@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, flash, request, current_app as app
 from flask_security import login_required
+from flask import Blueprint, render_template, flash, request, current_app as app
 
 from app.utils import secure_upload
 

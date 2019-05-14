@@ -1,29 +1,35 @@
 from flask import Flask
-from config import Config
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_security import Security, SQLAlchemyUserDatastore
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-bootstrap = Bootstrap(app)
-mail = Mail(app)
+from config import Config
+from app.forms import CustomLoginForm
 
-app.wsgi_app = ProxyFix(app.wsgi_app)
 
-credentials = service_account.Credentials.from_service_account_file(
-    app.config['SERVICE_ACCOUNT_FILE'], scopes=app.config['SCOPES'])
-service = build('drive', 'v3', credentials=credentials)
+migrate = Migrate()
+bootstrap = Bootstrap()
+mail = Mail()
+security = Security()
 
-from app import routes, models
-from app.app_forms import CustomLoginForm
 
-user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
-security = Security(app, user_datastore, login_form=CustomLoginForm)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    from app.models import db, User, Role
+    from app.routes import main_page
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bootstrap.init_app(app)
+    mail.init_app(app)
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    security.init_app(app, user_datastore, login_form=CustomLoginForm)
+
+    app.register_blueprint(main_page)
+
+    return app

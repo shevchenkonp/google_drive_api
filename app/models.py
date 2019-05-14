@@ -1,6 +1,7 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
 from flask_security import UserMixin, RoleMixin
 
+db = SQLAlchemy()
 
 roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
@@ -30,6 +31,5 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
 
     def __str__(self):
-        return '<User id=%s email=%s>' % (self.id, self.email)
-
+        return f'User id={self.id}, email={self.email}'
 

@@ -41,7 +41,7 @@ class Config(object):
 
     # soft block configurations
     MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS') or 5)
-    LOCK_TIME = int(os.environ.get('LOCK_TIME'))
+    LOCK_TIME = int(os.environ.get('LOCK_TIME') or 60)
 
     #Heroku settings
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')

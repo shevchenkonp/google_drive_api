@@ -40,7 +40,7 @@ class Config(object):
     FILE_PATH = os.path.join(UPLOAD_FOLDER, '{}')
 
     # soft block configurations
-    MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS'))
+    MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS') or 5)
     LOCK_TIME = int(os.environ.get('LOCK_TIME'))
 
     #Heroku settings

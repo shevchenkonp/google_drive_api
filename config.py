@@ -43,4 +43,5 @@ class Config(object):
     MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS = int(os.environ.get('MAX_UNSUCCESSFUL_LOGIN_ATTEMPTS'))
     LOCK_TIME = int(os.environ.get('LOCK_TIME'))
 
-
+    #Heroku settings
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')

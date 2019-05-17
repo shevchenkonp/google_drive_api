@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -31,5 +33,10 @@ def create_app(config_class=Config):
     security.init_app(app, user_datastore, login_form=CustomLoginForm)
 
     app.register_blueprint(main_page)
+
+    if app.config['LOG_TO_STDOUT']:
+        stream_handler = logging.StreamHandler()
+        stream_handler.setLevel(logging.INFO)
+        app.logger.addHandler(stream_handler)
 
     return app

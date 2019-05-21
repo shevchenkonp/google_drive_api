@@ -19,7 +19,7 @@ class Config(object):
     # flask-security configurations
     SECURITY_REGISTERABLE = os.environ.get('SECURITY_REGISTERABLE', True)
     SECURITY_SEND_REGISTER_EMAIL = os.environ.get('SECURITY_SEND_REGISTER_EMAIL', False)
-    SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT')
+    SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT') or 134
     SECURITY_TRACKABLE = os.environ.get('SECURITY_TRACKABLE', True)
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
